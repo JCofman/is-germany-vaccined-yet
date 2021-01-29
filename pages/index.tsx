@@ -166,6 +166,7 @@ const getVaccineDataSample = (
       return new Date(b.date).getTime() - new Date(a.date).getTime()
     }),
   ]
+
   return sortedBasedOnDate.slice(from, to)
 }
 
@@ -177,15 +178,15 @@ export const Home = (props: Props): JSX.Element => {
     dataVaccineWithPopulation
   )
 
-  const overalVaccinations = getVaccineDataSample(props.data, 0, 15).reduce(
+  const overalVaccinations = getVaccineDataSample(props.data, 0, 16).reduce(
     (prev, curr) => {
       return prev + parseInt(curr.firstDosesCumulative)
     },
     0
   )
-  const lastTimeUpdated = getVaccineDataSample(props.data, 0, 15)[0].date
+  const lastTimeUpdated = getVaccineDataSample(props.data, 0, 16)[0].date
 
-  const secondDoseVaccinations = getVaccineDataSample(props.data, 0, 15).reduce(
+  const secondDoseVaccinations = getVaccineDataSample(props.data, 0, 16).reduce(
     (prev, curr) => {
       return prev + parseInt(curr.secondDosesCumulative)
     },
@@ -193,7 +194,7 @@ export const Home = (props: Props): JSX.Element => {
   )
   const moreThenYesterVaccinationsday = Math.round(
     Math.abs(
-      (getVaccineDataSample(props.data, 15, 30).reduce((prev, curr) => {
+      (getVaccineDataSample(props.data, 16, 32).reduce((prev, curr) => {
         return prev + parseInt(curr.firstDosesCumulative)
       }, 0) /
         overalVaccinations) *
@@ -203,7 +204,7 @@ export const Home = (props: Props): JSX.Element => {
   )
   const moreThenSecondDoseVaccionationsYesterday = Math.round(
     Math.abs(
-      (getVaccineDataSample(props.data, 15, 30).reduce((prev, curr) => {
+      (getVaccineDataSample(props.data, 16, 32).reduce((prev, curr) => {
         return prev + parseInt(curr.secondDosesCumulative)
       }, 0) /
         secondDoseVaccinations) *
@@ -286,12 +287,10 @@ export const Home = (props: Props): JSX.Element => {
                     </p>
                     <div className="flex items-baseline">
                       <h2 className="title-font font-medium text-3xl text-gray-900">
-                        {Intl.NumberFormat('de-DE', {
-                          notation: 'compact',
-                        }).format(overalVaccinations)}{' '}
+                        {Intl.NumberFormat('de-DE').format(overalVaccinations)}{' '}
                       </h2>{' '}
-                      <span className="text-gray-500 text-xs">
-                        {' '}
+                      <span className="text-gray-500 text-xs mx-0.5">
+                        {'   '}
                         von 88 Mio.
                       </span>
                       <span
@@ -334,7 +333,7 @@ export const Home = (props: Props): JSX.Element => {
                           notation: 'compact',
                         }).format(secondDoseVaccinations)}{' '}
                       </h2>{' '}
-                      <span className="text-gray-500 text-xs">
+                      <span className="text-gray-500 text-xs mx-0.5">
                         von 88 Mio.{' '}
                       </span>
                       <span

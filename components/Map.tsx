@@ -95,10 +95,10 @@ export const Map = ({ topology }: { topology: any }) => {
                   <b>${feature.properties.name}</b>
                   <br />
                   <b>Erstimpfungen:</b> ${
-                    feature.properties.vaccineData[0]['firstDosesCumulative']
+                    feature.properties.vaccineData[0].firstDosesCumulative
                   }
                   <b>Zweitimpfungen:</b> ${
-                    feature.properties.vaccineData[0]['secondDosesCumulative']
+                    feature.properties.vaccineData[0].secondDosesCumulative
                   }
                   <br />
                   von ${Intl.NumberFormat('de-DE', {
@@ -110,9 +110,8 @@ export const Map = ({ topology }: { topology: any }) => {
                         d={path || ''}
                         fill={color(
                           parseInt(
-                            feature.properties.vaccineData[0][
-                              'secondDosesCumulative'
-                            ]
+                            feature.properties.vaccineData[0]
+                              .secondDosesCumulative
                           )
                         )}
                         stroke={background}
