@@ -1,12 +1,12 @@
 // csvtojson/index.d.ts file
-
 import * as React from 'react'
 import Head from 'next/head'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import * as topojson from 'topojson-client'
 import { Params } from 'next/dist/next-server/server/router'
 import ReactTooltip from 'react-tooltip'
 import csv from 'csvtojson'
+
 import Map from '../components/Map'
 import Footer from '../components/Footer'
 import topology from '../public/germany-topo.json'
@@ -350,11 +350,14 @@ export const Home = (props: Props): JSX.Element => {
               </div>
             </div>
           </div>
-          <ReactTooltip id="React-tooltip" type="dark">
-            Mehr als am Vortag
-          </ReactTooltip>
         </section>
-        <Map topology={{ features: dataWithGermanMap }}></Map>
+        <ReactTooltip id="React-tooltip" type="dark" uuid="more">
+          Mehr als am Vortag
+        </ReactTooltip>
+        <div style={{ alignSelf: 'center' }}>
+          <Map topology={{ features: dataWithGermanMap }}></Map>
+        </div>
+
         <div className="py-12 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mt-10">
@@ -385,9 +388,9 @@ export const Home = (props: Props): JSX.Element => {
                     </dt>
                     <dd className="mt-2 text-base text-gray-500">
                       Wurde 21.12.2020 in Deutschland zugelassen und wird
-                      geimpft. mindestens 60 Millionen Dosen über die EU sowie
+                      geimpft. Mindestens 60 Millionen Dosen über die EU sowie
                       eine gesicherte Option auf weitere 30 Millionen Dosen
-                      national
+                      national.
                     </dd>
                   </div>
                 </div>
@@ -418,8 +421,9 @@ export const Home = (props: Props): JSX.Element => {
                     </dt>
                     <dd className="mt-2 text-base text-gray-500">
                       Wurde am 06.01.2021 in Deutschland zugelassen und wird
-                      geimpft 50,5 Millionen Dosen über die EU, zusätzlich wird
-                      hier über zusätzliche Dosen national verhandel
+                      geimpft. Es wurden 50,5 Millionen Dosen über die EU
+                      bestellt, zusätzlich wird hier über zusätzliche Dosen
+                      national verhandelt.
                     </dd>
                   </div>
                 </div>
@@ -449,8 +453,9 @@ export const Home = (props: Props): JSX.Element => {
                       CureVac
                     </dt>
                     <dd className="mt-2 text-base text-gray-500">
-                      Noch nicht zugelassen. mindestens 42 Millionen Dosen über
-                      die EU sowie eine Option auf 20 Millionen Dosen national
+                      Wurde noch nicht zugelassen. Es wurden mindestens 42
+                      Millionen Dosen über die EU sowie eine Option auf 20
+                      Millionen Dosen national geordert.
                     </dd>
                   </div>
                 </div>
@@ -480,7 +485,8 @@ export const Home = (props: Props): JSX.Element => {
                       Johnson&Johnson
                     </dt>
                     <dd className="mt-2 text-base text-gray-500">
-                      Noch nicht zugelassen. 56,2 Millionen Dosen über die EU
+                      Wurde noch nicht zugelassen. Es wurden 56,2 Millionen
+                      Dosen über die EU bestellt.
                     </dd>
                   </div>
                 </div>
@@ -509,7 +515,8 @@ export const Home = (props: Props): JSX.Element => {
                       AstraZeneca
                     </dt>
                     <dd className="mt-2 text-base text-gray-500">
-                      Noch nicht zugelassen. 56,2 Millionen Dosen über die EU
+                      Wurde noch nicht zugelassen. Es wurden 56,2 Millionen
+                      Dosen über die EU bestellt.
                     </dd>
                   </div>
                 </div>
@@ -523,7 +530,10 @@ export const Home = (props: Props): JSX.Element => {
   )
 }
 
-export const getStaticProps: GetStaticProps<Props, Params> = async () => {
+export const getServerSideProps: GetServerSideProps<
+  Props,
+  Params
+> = async () => {
   const res = await fetch(
     `https://raw.githubusercontent.com/mathiasbynens/covid-19-vaccinations-germany/main/data/data.csv`
   )
@@ -534,9 +544,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async () => {
       notFound: true,
     }
   }
-
   return {
-    props: { data }, // will be passed to the page component as props
+    props: { data },
   }
 }
 
