@@ -171,6 +171,11 @@ const getVaccineDataSample = (
 }
 
 export const Home = (props: Props): JSX.Element => {
+  const [isTooltipVisible, setTooltipVisibility] = React.useState(false)
+  React.useEffect(() => {
+    setTooltipVisibility(true)
+  }, [])
+
   const dataVaccineWithPopulation = mergeVaccineDataWithPopulation()
 
   const dataWithGermanMap = mergePopulationDataWithGermanMap(
@@ -217,9 +222,13 @@ export const Home = (props: Props): JSX.Element => {
     <div className="container mx-auto px-4 max-w-3xl">
       <Head>
         <title>💉 Deutschland COVID-19 Impfstatus Dashboard?</title>
+        <meta
+          name="description"
+          content="A dashboard which shows an overview vaccine status in germany."
+        ></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col justify-items-center py-12 content-center">
+      <main className="flex flex-col justify-items-center py-12 content-center overflow-hidden">
         <div className="lg:text-center">
           <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
             💉🇩🇪 COVID-19 IMPFSTATUS Deutschland
@@ -351,10 +360,8 @@ export const Home = (props: Props): JSX.Element => {
             </div>
           </div>
         </section>
-        <ReactTooltip id="React-tooltip" type="dark" uuid="more">
-          Mehr als am Vortag
-        </ReactTooltip>
-        <div style={{ alignSelf: 'center' }}>
+
+        <div style={{ alignSelf: 'center', overflow: 'hidden' }}>
           <Map topology={{ features: dataWithGermanMap }}></Map>
         </div>
 
@@ -525,6 +532,12 @@ export const Home = (props: Props): JSX.Element => {
           </div>
         </div>
       </main>
+      {isTooltipVisible && (
+        <ReactTooltip id="React-tooltip" type="dark" uuid="more">
+          Mehr als am Vortag
+        </ReactTooltip>
+      )}
+
       <Footer></Footer>
     </div>
   )

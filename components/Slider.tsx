@@ -6,7 +6,7 @@ import { VisuallyHidden } from '@react-aria/visually-hidden'
 import { mergeProps } from '@react-aria/utils'
 import { useNumberFormatter } from '@react-aria/i18n'
 
-const Slider = (props) => {
+const Slider = (props): JSX.Element => {
   const trackRef = React.useRef(null)
   const numberFormatter = useNumberFormatter(props.formatOptions)
   const state = useSliderState({ ...props, numberFormatter })

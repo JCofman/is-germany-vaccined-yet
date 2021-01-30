@@ -54,7 +54,7 @@ const findColorScaleBasedOnState = (colors, state) => {
   })
 }
 
-export const Map = ({ topology }: { topology: any }) => {
+export const Map = ({ topology }: { topology: any }): JSX.Element => {
   const width = 800
   const height = 550
   const translate: [number, number] = [width / 15, height * 4.3]
