@@ -28,7 +28,7 @@ const generateColors = (topology) => {
         [f.properties.name]: scaleQuantize({
           domain: [Math.min(0), Math.min(parseInt(f.population.population))],
           range: [
-            '#D3D3De',
+            '#D3D3DE',
             '#BDBDBD',
             '#9E9E9E',
             '#7D7D7D',
@@ -55,14 +55,13 @@ const findColorScaleBasedOnState = (colors, state) => {
 }
 
 export const Map = ({ topology }: { topology: any }): JSX.Element => {
-  const width = 800
   const height = 550
-  const translate: [number, number] = [width / 15, height * 4.3]
+  const translate: [number, number] = [0, height * 4.3]
   const scale = 2000
   const colors = generateColors(topology)
   return (
     <>
-      <svg width={width} height={height}>
+      <svg viewBox="150 0 400 550">
         <CustomProjection<FeatureShape>
           projection={geoMercator}
           data={topology.features}
@@ -145,7 +144,7 @@ const NoSsr = (props) => (
 export default dynamic(() => Promise.resolve(NoSsr), {
   ssr: false,
   loading: () => (
-    <svg width="800" height="550">
+    <svg viewBox="203 0 400 550">
       <g>
         <g>
           <path

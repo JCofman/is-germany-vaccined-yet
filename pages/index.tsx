@@ -2,14 +2,32 @@
 import * as React from 'react'
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
+
 import * as topojson from 'topojson-client'
 import { Params } from 'next/dist/next-server/server/router'
 import ReactTooltip from 'react-tooltip'
 import csv from 'csvtojson'
-
+import { scaleThreshold } from '@visx/scale'
+import { LegendItem, LegendLabel, LegendThreshold } from '@visx/legend'
 import Map from '../components/Map'
 import Footer from '../components/Footer'
 import topology from '../public/germany-topo.json'
+
+const threshold = scaleThreshold({
+  domain: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+  range: [
+    '#D3D3DE',
+    '#BDBDBD',
+    '#9E9E9E',
+    '#7D7D7D',
+    '#696969',
+    '#C5E8B7',
+    '#ABE098',
+    '#83D475',
+    '#57C84D',
+    '#2EB62C',
+  ],
+})
 
 export type VaccineData = {
   date: string
@@ -39,6 +57,8 @@ type FeatureShape = {
 type Props = {
   data: VaccineData[]
 }
+
+const TOTAL_GERMAN_POPULATION = 88000000
 
 const germanStatePopulation = [
   {
@@ -228,7 +248,7 @@ export const Home = (props: Props): JSX.Element => {
         ></meta>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex flex-col justify-items-center py-12 content-center overflow-hidden">
+      <main className="flex flex-col justify-items-center py-12 content-center">
         <div className="lg:text-center">
           <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
             💉🇩🇪 COVID-19 IMPFSTATUS Deutschland
@@ -262,7 +282,22 @@ export const Home = (props: Props): JSX.Element => {
               hier
             </a>{' '}
             abgelegt werden. Die Karte zeigt die Anzahl der geimpften Personen
-            pro Einwohnerinnen und Einwohner.
+            pro Einwohnerinnen und Einwohner. Derzeit haben{' '}
+            <b>
+              {' '}
+              {Intl.NumberFormat('de-DE').format(
+                (overalVaccinations / TOTAL_GERMAN_POPULATION) * 100
+              )}
+              {'%'}
+            </b>{' '}
+            der Gesamtbevölkerung eine Erstimpfung und{' '}
+            <b>
+              {Intl.NumberFormat('de-DE').format(
+                (secondDoseVaccinations / TOTAL_GERMAN_POPULATION) * 100
+              )}
+              {'%'}
+            </b>{' '}
+            eine Zweitimpfung erhalten.
           </p>
           <p className="mt-4">
             letztes Datenupdate vom:{' '}
@@ -361,7 +396,30 @@ export const Home = (props: Props): JSX.Element => {
           </div>
         </section>
 
-        <div style={{ alignSelf: 'center', overflow: 'hidden' }}>
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 place-items-center">
+          <div className="border-2 border-gray-200 px-4 py-4 rounded-lg">
+            <p className="leading-relaxed text-xs text-left text-gray-900 font-semibold">
+              Legende
+            </p>{' '}
+            <p className="leading-relaxed text-xs text-left">
+              Zweitimpfung
+              <br></br>erhalten
+            </p>
+            <LegendThreshold scale={threshold}>
+              {(labels) =>
+                labels.map((label, i) => (
+                  <LegendItem key={`legend-quantile-${i}`} margin="1px 0">
+                    <LegendLabel align="left" margin="2px 10px 0 0">
+                      {i === 0 ? `0 %` : `${label.datum} %`}
+                    </LegendLabel>
+                    <svg width={15} height={15}>
+                      <rect fill={label.value} width={15} height={15} />
+                    </svg>
+                  </LegendItem>
+                ))
+              }
+            </LegendThreshold>
+          </div>
           <Map topology={{ features: dataWithGermanMap }}></Map>
         </div>
 
@@ -394,7 +452,7 @@ export const Home = (props: Props): JSX.Element => {
                       BioNTech/Pfizer
                     </dt>
                     <dd className="mt-2 text-base text-gray-500">
-                      Wurde 21.12.2020 in Deutschland zugelassen und wird
+                      Wurde am 21.12.2020 in Deutschland zugelassen und wird
                       geimpft. Mindestens 60 Millionen Dosen über die EU sowie
                       eine gesicherte Option auf weitere 30 Millionen Dosen
                       national.
@@ -434,7 +492,36 @@ export const Home = (props: Props): JSX.Element => {
                     </dd>
                   </div>
                 </div>
-
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-12 w-12 rounded-md bg-green-500 text-white">
+                      <svg
+                        className="h-6 w-6"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="ml-4">
+                    <dt className="text-lg leading-6 font-medium text-gray-900">
+                      AstraZeneca
+                    </dt>
+                    <dd className="mt-2 text-base text-gray-500">
+                      Wurde am 29.01.2020 zugelassen. Es wurden 56,2 Millionen
+                      Dosen über die EU bestellt.
+                    </dd>
+                  </div>
+                </div>
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-md bg-yellow-500 text-white">
@@ -492,38 +579,8 @@ export const Home = (props: Props): JSX.Element => {
                       Johnson&Johnson
                     </dt>
                     <dd className="mt-2 text-base text-gray-500">
-                      Wurde noch nicht zugelassen. Es wurden 56,2 Millionen
-                      Dosen über die EU bestellt.
-                    </dd>
-                  </div>
-                </div>
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-12 w-12 rounded-md bg-yellow-500 text-white">
-                      <svg
-                        className="h-6 w-6"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <dt className="text-lg leading-6 font-medium text-gray-900">
-                      AstraZeneca
-                    </dt>
-                    <dd className="mt-2 text-base text-gray-500">
-                      Wurde noch nicht zugelassen. Es wurden 56,2 Millionen
-                      Dosen über die EU bestellt.
+                      Wurde noch nicht zugelassen. Es wurden 37 Millionen Dosen
+                      über die EU bestellt.
                     </dd>
                   </div>
                 </div>
