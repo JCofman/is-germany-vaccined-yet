@@ -281,8 +281,9 @@ export const Home = (props: Props): JSX.Element => {
             >
               hier
             </a>{' '}
-            abgelegt werden. Die Karte zeigt die Anzahl der geimpften Personen
-            pro Einwohnerinnen und Einwohner. Derzeit haben{' '}
+            abgelegt werden. Die Karte zeigt beim hovern, die Anzahl der
+            geimpften Personen pro Einwohnerinnen und Einwohner im jeweiligen
+            Bundesland. Derzeit haben{' '}
             <b>
               {' '}
               {Intl.NumberFormat('de-DE').format(
