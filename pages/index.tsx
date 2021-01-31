@@ -1,7 +1,7 @@
 // csvtojson/index.d.ts file
 import * as React from 'react'
 import Head from 'next/head'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 
 import * as topojson from 'topojson-client'
 import { Params } from 'next/dist/next-server/server/router'
@@ -581,10 +581,7 @@ export const Home = (props: Props): JSX.Element => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<
-  Props,
-  Params
-> = async () => {
+export const getStaticProps: GetStaticProps<Props, Params> = async () => {
   const res = await fetch(
     `https://raw.githubusercontent.com/mathiasbynens/covid-19-vaccinations-germany/main/data/data.csv`
   )
@@ -597,6 +594,7 @@ export const getServerSideProps: GetServerSideProps<
   }
   return {
     props: { data },
+    revalidate: 1000000,
   }
 }
 
