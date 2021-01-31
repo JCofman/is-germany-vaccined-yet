@@ -12,20 +12,20 @@ import { LegendItem, LegendLabel, LegendThreshold } from '@visx/legend'
 import Map from '../components/Map'
 import Footer from '../components/Footer'
 import topology from '../public/germany-topo.json'
-
+import { RiSyringeLine } from 'react-icons/ri'
 const threshold = scaleThreshold({
   domain: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
   range: [
-    '#D3D3DE',
-    '#BDBDBD',
-    '#9E9E9E',
-    '#7D7D7D',
-    '#696969',
-    '#C5E8B7',
-    '#ABE098',
-    '#83D475',
-    '#57C84D',
-    '#2EB62C',
+    '#D1D5DB',
+    '#9CA3AF',
+    '#6B7280',
+    '#4B5563',
+    '#374151',
+    '#6EE7B7',
+    '#34D399',
+    '#10B981',
+    '#059669',
+    '#047857',
   ],
 })
 
@@ -309,22 +309,12 @@ export const Home = (props: Props): JSX.Element => {
             <div className="flex flex-wrap -m-4 text-center">
               <div className="p-1 md:w-2/4 sm:w-1/2 w-full">
                 <div className="relative flex border-2 border-gray-200 px-4 py-12 rounded-lg">
-                  <svg
-                    fill="none"
+                  <RiSyringeLine
                     stroke="currentColor"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
                     className="text-indigo-500 w-12 h-12 mb-3 inline-block"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                    />
-                  </svg>
+                  ></RiSyringeLine>
                   <div className="px-2">
                     <p className="leading-relaxed text-xs text-left">
                       Durchgeführte Erstimpfungen
@@ -351,22 +341,12 @@ export const Home = (props: Props): JSX.Element => {
               </div>
               <div className="p-1 md:w-2/4 sm:w-1/2 w-full">
                 <div className="relative flex border-2 border-gray-200 px-4 py-12 rounded-lg">
-                  <svg
-                    fill="none"
+                  <RiSyringeLine
                     stroke="currentColor"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth="2"
                     className="text-indigo-500 w-12 h-12 mb-3 inline-block"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                    />
-                  </svg>
+                  ></RiSyringeLine>
                   <div className="px-2">
                     <p className="text-xs leading-relaxed text-left">
                       Durchgeführte Zweitimpfungen
