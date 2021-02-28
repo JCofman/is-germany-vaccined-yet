@@ -322,7 +322,9 @@ export const Home = (props: Props): JSX.Element => {
                     </p>
                     <div className="flex items-baseline">
                       <h2 className="title-font font-medium text-3xl text-gray-900">
-                        {Intl.NumberFormat('de-DE').format(overalVaccinations)}{' '}
+                        {Intl.NumberFormat('de-DE', {
+                          notation: 'compact',
+                        }).format(overalVaccinations)}{' '}
                       </h2>{' '}
                       <span className="text-gray-500 text-xs mx-0.5">
                         {'   '}
@@ -594,7 +596,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async () => {
   }
   return {
     props: { data },
-    revalidate: 100,
+    revalidate: 1,
   }
 }
 
