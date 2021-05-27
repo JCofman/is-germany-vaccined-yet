@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const Footer = () => {
+const Footer = (): React.ReactNode => {
   return (
     <footer className="text-gray-600 body-font">
       <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">

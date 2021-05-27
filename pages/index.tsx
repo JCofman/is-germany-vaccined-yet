@@ -628,19 +628,18 @@ export const Home = (props: Props): JSX.Element => {
 }
 
 export const getStaticProps: GetStaticProps<Props, Params> = async () => {
+  // eslint-disable-next-line no-console
+  console.log('REVALIDATE')
   const res = await fetch(
     `https://raw.githubusercontent.com/mathiasbynens/covid-19-vaccinations-germany/main/data/data.csv`
   )
   const text = await res.text()
   const data: VaccineData[] = await (csv() as any).fromString(text)
-  if (!data) {
-    return {
-      notFound: true,
-    }
-  }
+
   return {
     props: { data },
-    revalidate: 10,
+    // revalidate every ten minutes
+    revalidate: 600,
   }
 }
 
