@@ -622,7 +622,7 @@ export const Home = (props: Props): JSX.Element => {
         </ReactTooltip>
       )}
 
-      <Footer></Footer>
+      <Footer />
     </div>
   )
 }
