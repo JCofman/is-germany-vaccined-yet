@@ -633,9 +633,13 @@ export const getStaticProps: GetStaticProps<Props, Params> = async () => {
   const res = await fetch(
     `https://raw.githubusercontent.com/mathiasbynens/covid-19-vaccinations-germany/main/data/data.csv`
   )
+  // eslint-disable-next-line no-console
+  console.log(res.status)
+  // eslint-disable-next-line no-console
+  console.log(res.statusText)
   const text = await res.text()
   const data: VaccineData[] = await (csv() as any).fromString(text)
-
+  // eslint-disable-next-line no-console
   return {
     props: { data },
     // revalidate every ten minutes
