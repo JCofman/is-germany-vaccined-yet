@@ -638,7 +638,10 @@ export const getStaticProps: GetStaticProps<Props, Params> = async () => {
   // eslint-disable-next-line no-console
   console.log(res.statusText)
   const text = await res.text()
-  const data: VaccineData[] = await (csv() as any).fromString(text)
+  const data: VaccineData[] = await csv().fromString(text)
+  // eslint-disable-next-line no-console
+  console.log(data)
+
   // eslint-disable-next-line no-console
   return {
     props: { data },
