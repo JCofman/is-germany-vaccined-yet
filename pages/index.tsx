@@ -29,6 +29,8 @@ export const getStaticProps: GetStaticProps<Props, Params> = async () => {
   }
 
   const data: VaccineData[] = await csv().fromString(text)
+  // eslint-disable-next-line no-console
+  console.log(data[data.length - 1])
 
   return {
     props: { data },
