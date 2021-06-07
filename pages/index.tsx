@@ -14,6 +14,29 @@ import Map from '../components/Map'
 import Footer from '../components/Footer'
 import topology from '../public/germany-topo.json'
 
+export const getStaticProps: GetStaticProps<Props, Params> = async () => {
+  // eslint-disable-next-line no-console
+  console.log('REVALIDATE')
+  const res = await fetch(
+    `https://raw.githubusercontent.com/mathiasbynens/covid-19-vaccinations-germany/main/data/data.csv`
+  )
+
+  const text = await res.text()
+
+  if (res.status !== 200) {
+    console.error(text)
+    throw new Error('Failed to fetch API')
+  }
+
+  const data: VaccineData[] = await csv().fromString(text)
+
+  return {
+    props: { data },
+    // revalidate every ten minutes
+    revalidate: 600,
+  }
+}
+
 const threshold = scaleThreshold({
   domain: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
   range: [
@@ -625,29 +648,6 @@ export const Home = (props: Props): JSX.Element => {
       <Footer />
     </div>
   )
-}
-
-export const getStaticProps: GetStaticProps<Props, Params> = async () => {
-  // eslint-disable-next-line no-console
-  console.log('REVALIDATE')
-  const res = await fetch(
-    `https://raw.githubusercontent.com/mathiasbynens/covid-19-vaccinations-germany/main/data/data.csv`
-  )
-  // eslint-disable-next-line no-console
-  console.log(res.status)
-  // eslint-disable-next-line no-console
-  console.log(res.statusText)
-  const text = await res.text()
-  const data: VaccineData[] = await csv().fromString(text)
-  // eslint-disable-next-line no-console
-  console.log(data)
-
-  // eslint-disable-next-line no-console
-  return {
-    props: { data },
-    // revalidate every ten minutes
-    revalidate: 600,
-  }
 }
 
 export default Home
