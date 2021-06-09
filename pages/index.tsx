@@ -59,61 +59,18 @@ export type VaccineData = {
   date: string
   pubDate: string
   state: string
-  onlyPartiallyVaccinatedCumulative: string
-  onlyPartiallyVaccinatedPercent: string
   atLeastPartiallyVaccinatedCumulative: string
   atLeastPartiallyVaccinatedPercent: string
+  atLeastPartiallyVaccinatedCumulativeBioNTech: string
+  atLeastPartiallyVaccinatedCumulativeModerna: string
+  atLeastPartiallyVaccinatedCumulativeAstraZeneca: string
   fullyVaccinatedCumulative: string
   fullyVaccinatedPercent: string
-  initialDosesCumulative: string
-  initialDosesCumulativeAtCentersHospitalsMobileTeams: string
-  initialDosesCumulativeAtCentersHospitalsMobileTeamsForPeopleBelow60: string
-  initialDosesCumulativeAtCentersHospitalsMobileTeamsForPeopleAbove60: string
-  initialDosesCumulativeAtDoctors: string
-  initialDosesCumulativeAtDoctorsForPeopleBelow60: string
-  initialDosesCumulativeAtDoctorsForPeopleAbove60: string
-  initialDosesPercent: string
-  initialDosesPercentOfPeopleBelow60: string
-  initialDosesPercentOfPeopleAbove60: string
-  initialDosesCumulativeBioNTech: string
-  initialDosesCumulativeBioNTechAtCentersHospitalsMobileTeams: string
-  initialDosesCumulativeBioNTechAtDoctors: string
-  initialDosesCumulativeModerna: string
-  initialDosesCumulativeModernaAtCentersHospitalsMobileTeams: string
-  initialDosesCumulativeModernaAtDoctors: string
-  initialDosesCumulativeAstraZeneca: string
-  initialDosesCumulativeAstraZenecaAtCentersHospitalsMobileTeams: string
-  initialDosesCumulativeAstraZenecaAtDoctors: string
-  initialDosesDueToAge: string
-  initialDosesDueToProfession: string
-  initialDosesDueToMedicalReasons: string
-  initialDosesToNursingHomeResidents: string
-  finalDosesCumulative: string
-  finalDosesCumulativeAtCentersHospitalsMobileTeams: string
-  finalDosesCumulativeAtCentersHospitalsMobileTeamsForPeopleBelow60: string
-  finalDosesCumulativeAtCentersHospitalsMobileTeamsForPeopleAbove60: string
-  finalDosesCumulativeAtDoctors: string
-  finalDosesCumulativeAtDoctorsForPeopleBelow60: string
-  finalDosesCumulativeAtDoctorsForPeopleAbove60: string
-  finalDosesPercent: string
-  finalDosesPercentOfPeopleBelow60: string
-  finalDosesPercentOfPeopleAbove60: string
-  finalDosesCumulativeBioNTech: string
-  finalDosesCumulativeBioNTechAtCentersHospitalsMobileTeams: string
-  finalDosesCumulativeBioNTechAtDoctors: string
-  finalDosesCumulativeModerna: string
-  finalDosesCumulativeModernaAtCentersHospitalsMobileTeams: string
-  finalDosesCumulativeModernaAtDoctors: string
-  finalDosesCumulativeAstraZeneca: string
-  finalDosesCumulativeAstraZenecaAtCentersHospitalsMobileTeams: string
-  finalDosesCumulativeAstraZenecaAtDoctors: string
-  finalDosesCumulativeJohnsonAndJohnson: string
-  finalDosesCumulativeJohnsonAndJohnsonAtCentersHospitalsMobileTeams: string
-  finalDosesCumulativeJohnsonAndJohnsonAtDoctors: string
-  finalDosesDueToAge: string
-  finalDosesDueToProfession: string
-  finalDosesDueToMedicalReasons: string
-  finalDosesToNursingHomeResidents: string
+  fullyVaccinatedCumulativeBioNTech: string
+  fullyVaccinatedCumulativeModerna: string
+  fullyVaccinatedCumulativeAstraZeneca: string
+  fullyVaccinatedCumulativeJohnsonAndJohnson: string
+  totalDosesCumulative: string
 }
 
 type FeatureShape = {
@@ -274,7 +231,7 @@ export const Home = (props: Props): JSX.Element => {
 
   const overalVaccinations = getVaccineDataSample(props.data, 0, 16).reduce(
     (prev, curr) => {
-      return prev + parseInt(curr.initialDosesCumulative)
+      return prev + parseInt(curr.atLeastPartiallyVaccinatedCumulative)
     },
     0
   )
@@ -282,14 +239,14 @@ export const Home = (props: Props): JSX.Element => {
 
   const secondDoseVaccinations = getVaccineDataSample(props.data, 0, 16).reduce(
     (prev, curr) => {
-      return prev + parseInt(curr.finalDosesCumulative)
+      return prev + parseInt(curr.fullyVaccinatedCumulative)
     },
     0
   )
   const moreThenYesterVaccinationsday = Math.round(
     Math.abs(
       (getVaccineDataSample(props.data, 16, 32).reduce((prev, curr) => {
-        return prev + parseInt(curr.initialDosesCumulative)
+        return prev + parseInt(curr.atLeastPartiallyVaccinatedCumulative)
       }, 0) /
         overalVaccinations) *
         100 -
@@ -299,7 +256,7 @@ export const Home = (props: Props): JSX.Element => {
   const moreThenSecondDoseVaccionationsYesterday = Math.round(
     Math.abs(
       (getVaccineDataSample(props.data, 16, 32).reduce((prev, curr) => {
-        return prev + parseInt(curr.finalDosesCumulative)
+        return prev + parseInt(curr.fullyVaccinatedCumulative)
       }, 0) /
         secondDoseVaccinations) *
         100 -
