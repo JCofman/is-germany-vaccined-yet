@@ -4,7 +4,6 @@ import Head from 'next/head'
 import { GetStaticProps } from 'next'
 import { RiSyringeLine } from 'react-icons/ri'
 import * as topojson from 'topojson-client'
-import { Params } from 'next/dist/next-server/server/router'
 import ReactTooltip from 'react-tooltip'
 import csv from 'csvtojson'
 import { scaleThreshold } from '@visx/scale'
@@ -14,7 +13,7 @@ import Map from '../components/Map'
 import Footer from '../components/Footer'
 import topology from '../public/germany-topo.json'
 
-export const getStaticProps: GetStaticProps<Props, Params> = async () => {
+export const getStaticProps: GetStaticProps<Props> = async () => {
   // eslint-disable-next-line no-console
   console.log('REVALIDATE')
   const res = await fetch(
