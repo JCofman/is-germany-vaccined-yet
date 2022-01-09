@@ -58,18 +58,37 @@ export type VaccineData = {
   date: string
   pubDate: string
   state: string
+  totalDosesCumulative: string
+  initialDosesCumulative: string
+  initialDosesCumulativeBioNTech: string
+  initialDosesCumulativeModerna: string
+  initialDosesCumulativeAstraZeneca: string
+  finalDosesCumulative: string
+  finalDosesCumulativeBioNTech: string
+  finalDosesCumulativeModerna: string
+  finalDosesCumulativeAstraZeneca: string
+  finalDosesCumulativeJohnsonAndJohnson: string
+  boosterDosesCumulative: string
+  boosterDosesCumulativeBioNTech: string
+  boosterDosesCumulativeModerna: string
+  boosterDosesCumulativeJohnsonAndJohnson: string
+  onlyPartiallyVaccinatedCumulative: string
+  onlyPartiallyVaccinatedPercent: string
+  onlyPartiallyVaccinatedCumulativeBioNTech: string
+  onlyPartiallyVaccinatedCumulativeModerna: string
+  onlyPartiallyVaccinatedCumulativeAstraZeneca: string
   atLeastPartiallyVaccinatedCumulative: string
   atLeastPartiallyVaccinatedPercent: string
   atLeastPartiallyVaccinatedCumulativeBioNTech: string
   atLeastPartiallyVaccinatedCumulativeModerna: string
   atLeastPartiallyVaccinatedCumulativeAstraZeneca: string
+  atLeastPartiallyVaccinatedCumulativeJohnsonAndJohnson: string
   fullyVaccinatedCumulative: string
   fullyVaccinatedPercent: string
   fullyVaccinatedCumulativeBioNTech: string
   fullyVaccinatedCumulativeModerna: string
   fullyVaccinatedCumulativeAstraZeneca: string
   fullyVaccinatedCumulativeJohnsonAndJohnson: string
-  totalDosesCumulative: string
 }
 
 type FeatureShape = {
@@ -262,6 +281,22 @@ export const Home = (props: Props): JSX.Element => {
         100
     )
   )
+  const boosterVaccinations = getVaccineDataSample(props.data, 0, 16).reduce(
+    (prev, curr) => {
+      return prev + parseInt(curr.boosterDosesCumulative)
+    },
+    0
+  )
+  const moreThenYesterBoosterday = Math.round(
+    Math.abs(
+      (getVaccineDataSample(props.data, 16, 32).reduce((prev, curr) => {
+        return prev + parseInt(curr.atLeastPartiallyVaccinatedCumulative)
+      }, 0) /
+        overalVaccinations) *
+        100 -
+        100
+    )
+  )
 
   return (
     <div className="container mx-auto px-4 max-w-3xl">
@@ -395,6 +430,40 @@ export const Home = (props: Props): JSX.Element => {
                       >
                         {' '}
                         ↑ {moreThenSecondDoseVaccionationsYesterday} %
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-1 md:w-2/4 sm:w-1/2 w-full">
+                <div className="relative flex border-2 border-gray-200 px-4 py-12 rounded-lg">
+                  <RiSyringeLine
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-indigo-500 w-12 h-12 mb-3 inline-block"
+                  ></RiSyringeLine>
+                  <div className="px-2">
+                    <p className="leading-relaxed text-xs text-left">
+                      Durchgeführte BoosterImpfung
+                    </p>
+                    <div className="flex items-baseline">
+                      <h2 className="title-font font-medium text-3xl text-gray-900">
+                        {Intl.NumberFormat('de-DE', {
+                          notation: 'compact',
+                        }).format(boosterVaccinations)}{' '}
+                      </h2>{' '}
+                      <span className="text-gray-500 text-xs mx-0.5">
+                        {'   '}
+                        von 88 Mio.
+                      </span>
+                      <span
+                        data-tip
+                        data-for="React-tooltip"
+                        className="p-1 bg-green-100 rounded-xl flex items-center space-x-4 text-base font-light text-green-800 absolute bottom-2 right-2"
+                      >
+                        {' '}
+                        ↑ {moreThenYesterBoosterday} %
                       </span>
                     </div>
                   </div>
